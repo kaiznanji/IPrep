@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<title>Interview Room</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Avenir">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Avenir", sans-serif;}
+body, html {
+  height: 100%;
+  color: #777;
+  line-height: 1.8;
+}
+
+.fix-middle{
+  padding-top: 50px;
+  padding-bottom: 15px;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.results{
+  color: green;
+  text-align: center;
+  text-decoration: none;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.single-chart {
+  width: 33%;
+  justify-content: space-around ;
+}
+
+.circular-chart {
+  display: block;
+  margin: 10px auto;
+  max-width: 80%;
+  max-height: 250px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #eee;
+  stroke-width: 3.8;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  animation: progress 2s ease-out forwards;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.circular-chart.orange .circle {
+  stroke: #FFFFFF;
+}
+
+.circular-chart.green .circle {
+  stroke: #4CC790;
+}
+
+.circular-chart.blue .circle {
+  stroke: #FFFFFF;
+}
+
+.percentage {
+  fill: #666;
+  font-family: sans-serif;
+  font-size: 0.5em;
+  text-anchor: middle;
+}
+</style>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="./" class="w3-bar-item w3-button">HOME</a>
+    <a href=about class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> ABOUT</a>
+    <a href=contact class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-envelope"></i> CONTACT</a>
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
+    <a href=about class="w3-bar-item w3-button" onclick="toggleFunction()">ABOUT</a>
+    <a href=contact class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACT</a>
+    <a href="#" class="w3-bar-item w3-button">SEARCH</a>
+  </div>
+</div>
+
+<div class="bgimg-1 w3-display-container w3-opacity-min full-height" id="home">
+  <div class="w3-display-middle fix-middle" style="white-space:nowrap;">
+    <span class="w3-center w3-white w3-xxlarge w3-wide w3-animate-opacity"> <span class="w3-hide-small">Your score</span> out of 100%: </span>
+
+    <div class="flex-wrapper">
+      <div class="single-chart">
+      </div>
+
+      <div class="single-chart">
+        <svg viewBox="0 0 36 36" class="circular-chart green">
+          <path class="circle-bg"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path class="circle"
+            stroke-dasharray="60, 100"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <text x="18" y="20.35" class="percentage">60%</text>
+        </svg>
+      </div>
+
+      <div class="single-chart">
+      </div>
+    </div>
+    <div class="w3-center w3-panel">
+      <p><i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i>Enter your email to receive a video copy of your question responses</p>
+
+      <form action="send_mail.php" method=”POST” name="form" role="form">
+        <input class="w3-input w3-border" type="text" name="name" placeholder="Name" required name="Name">
+        <button class="w3-button w3-black w3-right w3-section" type="submit">
+          <i class="fa fa-paper-plane"></i> SEND VIDEO COPY
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="w3-content w3-padding w3-display-container" style="max-width:100%">
+
+  <div class="w3-row-padding fix-middle">
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #1</h3>
+      <p class="w3-opacity">Your Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #1</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #2</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #2</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #3</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #3</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #4</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #4</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #5</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <h3>Question #5</h3>
+      <p class="w3-opacity">Our Response</p>
+      <p>Insert Response Here</p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-light-grey w3-padding-32">
+  <p>Powered by iPrep&trade; &reg;</p>
+</footer>
+
+</body>
+</html>
