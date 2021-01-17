@@ -22,7 +22,7 @@ def room():
 
 
 @app.route('/results', methods=['GET', 'POST'])
-def room():
+def results():
     return render_template("results.html")
 
 
