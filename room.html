@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<title>Interview Room</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Avenir">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Avenir", sans-serif;}
+body, html {
+  height: 100%;
+  color: #777;
+  line-height: 1.8;
+}
+
+.fix-middle{
+  padding-top: 50px;
+  padding-bottom: 15px;
+}
+
+.full-height {
+  height: 100%;
+}
+</style>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="#home" class="w3-bar-item w3-button" onclick="location.href='file:///Users/yoon/Downloads/iPrep/main.html';">HOME</a>
+    <a href="#about" class="w3-bar-item w3-button w3-hide-small" onclick="location.href='file:///Users/yoon/Downloads/iPrep/about.html';"><i class="fa fa-user"></i> ABOUT</a>
+    <a href="#contact" class="w3-bar-item w3-button w3-hide-small" onclick="location.href='file:///Users/yoon/Downloads/iPrep/contact.html';"><i class="fa fa-envelope"></i> CONTACT</a>
+  </div>
+
+  <!-- Navbar on small screens -->
+  <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">
+    <a href="#about" class="w3-bar-item w3-button" onclick="toggleFunction()">ABOUT</a>
+    <a href="#contact" class="w3-bar-item w3-button" onclick="toggleFunction()">CONTACT</a>
+    <a href="#" class="w3-bar-item w3-button">SEARCH</a>
+  </div>
+</div>
+
+
+<!-- Pricing Section -->
+<div class="w3-padding-64 w3-center w3-white full-height">
+  <h1 class="w3-xlarger"><b>Welcome to the Room</b></h1>
+  <p class="w3-medium">INSERT QUESTION HERE</p>
+  <div class="w3-row-padding" style="margin-top:15px">
+    <div class="w3-half w3-section">
+      <video controls></video>
+      <button id="btnStart">START RECORDING</button>
+      <button id="btnStop">STOP RECORDING</button>
+    </div>
+    <div class="w3-half w3-section">
+      <video id="vid2" controls></video>
+    </div>
+  </div>
+  <br>
+</div>
+
+    <script>
+
+        let constraintObj = {
+            audio: true,
+            video: {
+                facingMode: "user",
+                width: { min: 640, ideal: 500, max: 720 },
+                height: { min: 480, ideal: 300, max: 550 }
+            }
+        };
+        // width: 1280, height: 720  -- preference only
+        // facingMode: {exact: "user"}
+        // facingMode: "environment"
+
+        //handle older browsers that might implement getUserMedia in some way
+        if (navigator.mediaDevices === undefined) {
+            navigator.mediaDevices = {};
+            navigator.mediaDevices.getUserMedia = function(constraintObj) {
+                let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                if (!getUserMedia) {
+                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+                }
+                return new Promise(function(resolve, reject) {
+                    getUserMedia.call(navigator, constraintObj, resolve, reject);
+                });
+            }
+        }else{
+            navigator.mediaDevices.enumerateDevices()
+            .then(devices => {
+                devices.forEach(device=>{
+                    console.log(device.kind.toUpperCase(), device.label);
+                    //, device.deviceId
+                })
+            })
+            .catch(err=>{
+                console.log(err.name, err.message);
+            })
+        }
+
+        navigator.mediaDevices.getUserMedia(constraintObj)
+        .then(function(mediaStreamObj) {
+            //connect the media stream to the first video element
+            let video = document.querySelector('video');
+            if ("srcObject" in video) {
+                video.srcObject = mediaStreamObj;
+            } else {
+                //old version
+                video.src = window.URL.createObjectURL(mediaStreamObj);
+            }
+
+            video.onloadedmetadata = function(ev) {
+                //show in the video element what is being captured by the webcam
+                video.play();
+            };
+
+            //add listeners for saving video/audio
+            let start = document.getElementById('btnStart');
+            let stop = document.getElementById('btnStop');
+            let vidSave = document.getElementById('vid2');
+            let mediaRecorder = new MediaRecorder(mediaStreamObj);
+            let chunks = [];
+
+            start.addEventListener('click', (ev)=>{
+                mediaRecorder.start();
+                console.log(mediaRecorder.state);
+            })
+            stop.addEventListener('click', (ev)=>{
+                mediaRecorder.stop();
+                console.log(mediaRecorder.state);
+            });
+            mediaRecorder.ondataavailable = function(ev) {
+                chunks.push(ev.data);
+            }
+            mediaRecorder.onstop = (ev)=>{
+                let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
+                chunks = [];
+                let videoURL = window.URL.createObjectURL(blob);
+                vidSave.src = videoURL;
+            }
+        })
+        .catch(function(err) {
+            console.log(err.name, err.message);
+        });
+
+        /*********************************
+        getUserMedia returns a Promise
+        resolve - returns a MediaStream Object
+        reject returns one of the following errors
+        AbortError - generic unknown cause
+        NotAllowedError (SecurityError) - user rejected permissions
+        NotFoundError - missing media track
+        NotReadableError - user permissions given but hardware/OS error
+        OverconstrainedError - constraint video settings preventing
+        TypeError - audio: false, video: false
+        *********************************/
+    </script>
+
+<!-- Footer -->
+<footer class="w3-center w3-light-grey w3-padding-32">
+  <p>Powered by iPrep&trade; &reg;</p>
+</footer>
+
+</body>
+</html>
