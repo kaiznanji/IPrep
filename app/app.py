@@ -19,10 +19,15 @@ def about():
 def room():
     return render_template("room.html")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 009829f61e8f451673f2be2ac8a2f7b2e68d1b7c
 @app.route('/results', methods=['GET', 'POST'])
 def results():
     return render_template("results.html")
 
+<<<<<<< HEAD
 # POST AND GET REQUESTS
 @app.route('/recieveblob', methods=['GET','POST'])
 def recieve_blob():
@@ -32,6 +37,11 @@ def recieve_blob():
         return "Success"
     return 'Call from get' 
   
+=======
+
+
+
+>>>>>>> 009829f61e8f451673f2be2ac8a2f7b2e68d1b7c
 # Main page
 @app.route('/')
 def index():
