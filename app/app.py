@@ -16,11 +16,14 @@ def about():
     return render_template("about.html")
 
 
-
-
 @app.route('/room', methods=['GET', 'POST'])
 def room():
     return render_template("room.html")
+
+
+@app.route('/results', methods=['GET', 'POST'])
+def room():
+    return render_template("results.html")
 
 
 
