@@ -77,15 +77,16 @@
       <div id="startButton" class="button">
         Start
       </div>
-      <h2>Preview</h2>
       <video id="preview" width="160" height="120" autoplay muted></video>
       <div id="stopButton" class="button">
         Stop
       </div>
-      <h2>Recording</h2>
+      <div onclick="senddata(content)" class="button">
+        Next Question
+      </div>
       <video id="recording" width="160" height="120" controls></video>
       <button class="results"><a href=results class="w3-bar-item w3-button w3-hide-small">View Results</a></button>
-      <a id="downloadButton" class="button">
+      <a id="downloadButton" class="button" style=" display:none;">
         Download
       </a>
     </div>
@@ -97,6 +98,9 @@
 
 
   <script>
+    /*********************************
+    Script to record video 
+    *********************************/
     let preview = document.getElementById("preview");
     let recording = document.getElementById("recording");
     let startButton = document.getElementById("startButton");
@@ -120,20 +124,15 @@
 
       recorder.ondataavailable = event => data.push(event.data);
       recorder.start();
-      log(recorder.state + " for " + (lengthInMS / 1000) + " seconds...");
 
       let stopped = new Promise((resolve, reject) => {
         recorder.onstop = resolve;
         recorder.onerror = event => reject(event.name);
-      });
+      })
 
-      let recorded = wait(lengthInMS).then(
-        () => recorder.state == "recording" && recorder.stop()
-      );
 
       return Promise.all([
-        stopped,
-        recorded
+        stopped
       ])
         .then(() => data);
     }
@@ -141,6 +140,7 @@
     function stop(stream) {
       stream.getTracks().forEach(track => track.stop());
     }
+
 
     startButton.addEventListener("click", function () {
       navigator.mediaDevices.getUserMedia({
@@ -158,24 +158,78 @@
           downloadButton.href = recording.src;
           downloadButton.download = "RecordedVideo.webm";
 
-          log("Successfully recorded " + recordedBlob.size + " bytes of " +
-            recordedBlob.type + " media.");
+
         })
         .catch(log);
     }, false);
+
     stopButton.addEventListener("click", function () {
       stop(preview.srcObject);
     }, false);
-    let form = new FormData();
-    let request = new XMLHttpRequest();
-    form.append("file", file);
-    request.open("POST", "/recieveblob", true);
-    request.send(form);
-    console.log(request.response);
 
+    /*********************************
+        Send post request  
+    *********************************/
+    function postFile(content) {
+        var val = content;
 
+        fetch('/recievetext', {
 
+            // Declare what type of data we're sending
+            headers: {
+                'Content-Type': 'application/json'
+            },
 
+            // Specify the method
+            method: 'POST',
+
+            // A JSON payload
+            body: JSON.stringify({ "text": val })
+        })
+            .then(function (response) {
+                return response.text();
+            })
+            .then(function (text) {
+
+                console.log("data was sent");
+            });
+    }
+    /*********************************
+        Speech recognition
+    *********************************/
+
+    var speechRecognition = window.webkitSpeechRecognition
+
+    var recognition = new speechRecognition()
+
+    var content = ''
+
+    recognition.continuous = true
+
+    recognition.onresult = function (event) {
+      var current = event.resultIndex;
+
+      var transcript = event.results[current][0].transcript
+
+      content += transcript
+
+    }
+
+    function senddata(content) {
+      postFile(content)
+      content = ''
+    }
+
+    function startrec() {
+      if (content.length) {
+        content += ''
+      }
+
+      recognition.start()
+    }
+
+    startButton.addEventListener("click", startrec);
+    
     /*********************************
     getUserMedia returns a Promise
     resolve - returns a MediaStream Object
