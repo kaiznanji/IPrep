@@ -20,6 +20,6 @@ Upon entering a room, you will be prompted with a rnadom interview question from
 
 # Results 
 
-After completing their practice interview, the software will compile the answers from the user and compare it based on the sample answer recorded. A similarity score will be produced showing the user how similar their answer is to the sample answer. Additionally, users will have the opportunity to receive a copy of the recording at the end to their email. 
+After completing their practice interview, the software will compile the answers from the user and compare it based on the sample answer recorded. A similarity score will be produced showing the user how similar their answer is to the sample answer. Additionally, users will have the opportunity to receive a copy of the recording at the end to their email. They can then always go back and try it again. 
 
 ![Screen Shot 2021-01-20 at 3 21 46 AM](https://user-images.githubusercontent.com/66855052/105147091-b1578d80-5ace-11eb-971f-70a59beebd19.png)
